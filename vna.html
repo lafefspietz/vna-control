@@ -89,9 +89,9 @@
                 HIGH/LOW
             </td>
         </tr>
-
     </table>
-    <div id = "savebutton" class = "button">SAVE DATA FILE</div>
+    <div id = "savebutton" class = "button">SAVE TOUCHSTONE FILE</div>
+    <div id = "savepngbutton" class = "button">SAVE PNG IMAGE FILE</div>
 </div>
 
 
@@ -227,6 +227,36 @@ httpc.onreadystatechange = function(){
 httpc.open("GET", "load-file.php?filename=vna-control.json", true);
 httpc.send();
 
+document.getElementById("numpoints").onchange = function(){
+    vnacontrol.numpoints = parseInt(this.value);
+    savevnacontroljson();
+}
+document.getElementById("ifbw").onchange = function(){
+    vnacontrol.ifbw = parseFloat(this.value);
+    savevnacontroljson();
+}
+document.getElementById("start").onchange = function(){
+    vnacontrol.start = parseFloat(this.value*1e9);
+    savevnacontroljson();
+}
+document.getElementById("stop").onchange = function(){
+    vnacontrol.stop = parseFloat(this.value*1e9);
+    savevnacontroljson();
+}
+document.getElementById("powerbutton").onclick = function(){
+    if(this.innerHTML == "HIGH"){
+        this.innerHTML = "LOW";
+    }
+    else{
+        this.innerHTML = "HIGH";
+    }
+    
+    vnacontrol.power = this.innerHTML;
+    savevnacontroljson();
+}
+
+
+
 
 dbmin = -120;
 dbmax = 10;
@@ -241,7 +271,7 @@ function setup() {
 }
 
 traceindex=0;
-traceindexold= 0;
+oldtraceindex= 0;
 function draw(){
     
     var httpc = new XMLHttpRequest();
@@ -249,25 +279,24 @@ function draw(){
         if (this.readyState == 4 && this.status == 200) {
             nowjson = JSON.parse(this.responseText);
             traceindex = nowjson.traceindex;
-            if(traceindex != oldtraceindex){
+            if(traceindex != oldtraceindex){ //only load trace if new trace has been taken
+                var httpct = new XMLHttpRequest();
+                httpct.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        trace = JSON.parse(this.responseText);
+                        loadtrace();
+                    }
+                };
+                httpct.open("GET", "load-file.php?filename=trace.json", true);
+                httpct.send();
                 
             }
         }
     };
     httpc.open("GET", "load-file.php?filename=now.json", true);
     httpc.send();
-    
-    var httpc = new XMLHttpRequest();
-    httpc.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            trace = JSON.parse(this.responseText);
-            loadtrace();
-        }
-    };
-    httpc.open("GET", "load-file.php?filename=trace.json", true);
-    httpc.send();
-
     traceindexold = traceindex;
+    
 }
 
 function loadtrace(){

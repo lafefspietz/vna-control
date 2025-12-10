@@ -1,11 +1,14 @@
+![](qrcode.png)
 # [home](index.html)
 
 ## Plan for immediate development:
 
  - build model of information flow with physical media and digital diagram
- - only update json in html when json has been updated with python
- - control vna state from html
+ - only update json in html when json has been updated with python✅
+ - control vna state from html✅
  - phase mode
+ - add details for how to use this software to this document
+ - add qr code to this document
  - save and load phase delay and mag range in json
  - click to save .png
  - click to save .s2p
@@ -22,3 +25,4 @@
  - [vna-live.ipynb](vna-live.ipynb)
  - [gpib-sandbox.ipynb](gpib-sandbox.ipynb)
  - [get-trace.ipynb](get-trace.ipynb)
+ - [qrcode.html](qrcode.html)
