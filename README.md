@@ -22,6 +22,7 @@
 # [vna-control](https://github.com/lafefspietz/vna-control)
 
  - [vna.html](vna.html)
+ - [edit-web-files.html](edit-web-files.html)
  - [vna-live.ipynb](vna-live.ipynb)
  - [gpib-sandbox.ipynb](gpib-sandbox.ipynb)
  - [get-trace.ipynb](get-trace.ipynb)
